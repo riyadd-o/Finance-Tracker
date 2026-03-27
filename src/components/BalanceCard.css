@@ -1,0 +1,77 @@
+.balance-card {
+  padding: 2rem;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+}
+
+.balance-top {
+  margin-bottom: 2rem;
+}
+.balance-top .subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+.main-balance {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-wrapper {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.bg-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+.bg-success svg {
+  color: var(--success);
+}
+
+.bg-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--danger);
+}
+.bg-danger svg {
+  color: var(--danger);
+}
+
+.stat-text span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.stat-text h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--glass-border);
+}

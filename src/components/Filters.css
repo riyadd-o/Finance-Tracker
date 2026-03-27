@@ -1,0 +1,83 @@
+.filters-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.filter-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 1.25rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 5; /* Ensure icon is above input background */
+}
+
+.filter-box select,
+.filter-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3.5rem; /* Explicit vertical padding */
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 600;
+  height: 56px; /* Slightly taller for better touch targets & visibility */
+  line-height: 1.2; /* Reset line-height to prevent clipping */
+  appearance: none;
+  outline: none;
+  transition: all 0.3s var(--ease-soft);
+}
+
+.filter-box select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center;
+  padding-right: 3rem;
+}
+
+.filter-box select:focus,
+.filter-box input:focus {
+  border-color: var(--primary);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.filter-box select:focus ~ .filter-icon,
+.filter-box input:focus ~ .filter-icon {
+  color: var(--primary);
+  opacity: 1;
+}
+
+/* Mobile Specific Fixes */
+@media (max-width: 600px) {
+  .filters-container {
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  
+  .filter-box select,
+  .filter-box input {
+    height: 60px; /* Taller on mobile to avoid text compression */
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+    font-size: 1.05rem; /* Larger font for easier reading */
+  }
+
+  /* Specific fix for "All Transactions" select box rendering on some mobile browsers */
+  .filter-box select {
+    line-height: normal;
+    display: flex;
+    align-items: center;
+  }
+}

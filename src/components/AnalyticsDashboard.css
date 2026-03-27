@@ -1,0 +1,155 @@
+.analytics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Stats Layout */
+.stats-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Desktop Stats Display (Top Row Grid) */
+@media (min-width: 900px) {
+  .stats-main-wrapper {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    gap: 1.5rem;
+  }
+}
+
+.liquidity-card {
+  padding: 2.5rem 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  min-height: 140px;
+}
+
+.stats-secondary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.stat-card.compact {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.compact .stat-value {
+  font-size: 1.4rem;
+}
+
+.stat-icon-wrapper.small {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.big-value {
+  font-size: 2.5rem !important;
+  letter-spacing: -1.5px !important;
+}
+
+/* Charts Tabs (Mobile Only) */
+.mobile-tabs {
+  display: flex;
+  padding: 0.5rem;
+  border-radius: 16px;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.tab-btn.active {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--primary);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* Charts Grid */
+.charts-grid-responsive {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.chart-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+}
+
+.chart-header { margin-bottom: 2rem; }
+
+/* Desktop Force Display Both */
+@media (min-width: 900px) {
+  .mobile-tabs { display: none; }
+  .charts-grid-responsive {
+    grid-template-columns: 1fr 1fr;
+  }
+  .active-on-mobile { /* Replaces conditional logic if we show both */
+    display: flex !important;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .liquidity-card {
+    padding: 1.75rem 1.5rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.25rem;
+  }
+  
+  .liquidity-card .stat-icon-wrapper {
+    margin: 0 auto;
+  }
+  
+  .big-value {
+    font-size: 2.2rem !important;
+  }
+
+  .stats-secondary-grid {
+    gap: 0.75rem;
+  }
+
+  .stat-card.compact {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .compact .stat-icon-wrapper {
+    margin: 0 auto;
+  }
+  
+  .compact .stat-value {
+    font-size: 1.15rem;
+  }
+
+  .chart-card { padding: 1.25rem; min-height: 340px; }
+  .chart-header h3 { font-size: 1.15rem; }
+}
