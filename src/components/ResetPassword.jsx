@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Lock, ShieldCheck, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
   const [session, setSession] = useState(null);
   const [checkingSession, setCheckingSession] = useState(true);
   
@@ -24,7 +26,7 @@ const ResetPassword = () => {
 
     checkInitialSession();
 
-    // 2. Listen for auth changes (Supabase handles the URL hash automatically)
+    // 2. Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setCheckingSession(false);
@@ -35,16 +37,6 @@ const ResetPassword = () => {
 
   const handleReset = async (e) => {
     e.preventDefault();
-    
-    // Validation
-    if (!password || !confirmPassword) {
-      setErrorMsg('All fields are required.');
-      return;
-    }
-    if (password.length < 6) {
-      setErrorMsg('Password must be at least 6 characters long.');
-      return;
-    }
     if (password !== confirmPassword) {
       setErrorMsg('Passwords do not match.');
       return;
@@ -56,12 +48,11 @@ const ResetPassword = () => {
 
     try {
       const { error } = await supabase.auth.updateUser({ password });
-      
       if (error) throw error;
       
-      setMessage('Password updated successfully! Redirecting to login...');
+      setMessage('Password updated successfully! Redirecting...');
       setTimeout(() => {
-        window.location.href = '/';
+        navigate('/login');
       }, 3000);
     } catch (error) {
       setErrorMsg(error.message);
@@ -75,7 +66,7 @@ const ResetPassword = () => {
       <div className="auth-page-wrapper">
         <div className="loading-screen">
           <Loader2 className="spinner-ring" size={48} />
-          <p>Verifying secure recovery link...</p>
+          <p>Verifying secure recovery...</p>
         </div>
       </div>
     );
@@ -85,94 +76,47 @@ const ResetPassword = () => {
     <div className="auth-page-wrapper">
       <motion.div 
         className="auth-card glass-panel"
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
       >
         <div className="auth-card-inner">
-          <span className="auth-badge">Security Access</span>
-          <h2 className="auth-title">Update<span>Password</span></h2>
+          <span className="auth-badge">Secure Recovery</span>
+          <h2 className="auth-title">Reset<span>Password</span></h2>
           
           <AnimatePresence mode="wait">
             {!session ? (
-              <motion.div 
-                key="no-session"
-                className="auth-error"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
-                  <AlertCircle size={16} />
-                  <span>Invalid or expired reset link. Please request a new one.</span>
-                </div>
-                <button className="back-link" style={{marginTop: '20px'}} onClick={() => window.location.href = '/'}>
-                  Go to Login
-                </button>
+              <motion.div className="auth-error">
+                <AlertCircle size={16} />
+                <span>Invalid link. Please try again.</span>
+                <button className="nav-cta-btn" onClick={() => navigate('/login')} style={{marginTop: '2rem'}}>Back to Login</button>
               </motion.div>
             ) : (
-              <motion.div key="form">
-                <p className="auth-subtitle">Create a new secure master password</p>
+              <form onSubmit={handleReset} className="auth-form">
+                <p className="auth-subtitle">Set your new master password.</p>
 
-                {message && (
-                  <div className="auth-success" style={{marginBottom: '20px'}}>
-                    {message}
-                  </div>
-                )}
-                
-                {errorMsg && (
-                  <div className="auth-error" style={{marginBottom: '20px'}}>
-                    <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
-                      <AlertCircle size={16} />
-                      <span>{errorMsg}</span>
-                    </div>
-                  </div>
-                )}
+                {message && <div className="auth-success">{message}</div>}
+                {errorMsg && <div className="auth-error">{errorMsg}</div>}
 
-                <form onSubmit={handleReset} className="auth-form">
-                  <div className="form-group">
-                    <label>New Password</label>
-                    <div className="input-wrap prefix">
-                      <Lock size={18} className="input-icon" />
-                      <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        required
-                        className="auth-input"
-                        disabled={loading || message}
-                      />
-                    </div>
+                <div className="form-group">
+                  <label>New Password</label>
+                  <div className="input-wrap prefix">
+                    <Lock size={18} className="input-icon" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                   </div>
+                </div>
 
-                  <div className="form-group">
-                    <label>Confirm Password</label>
-                    <div className="input-wrap prefix">
-                      <Lock size={18} className="input-icon" />
-                      <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="••••••••"
-                        required
-                        className="auth-input"
-                        disabled={loading || message}
-                      />
-                    </div>
+                <div className="form-group">
+                  <label>Confirm Password</label>
+                  <div className="input-wrap prefix">
+                    <Lock size={18} className="input-icon" />
+                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                   </div>
+                </div>
 
-                  <motion.button 
-                    type="submit" 
-                    className="submit-btn full-width" 
-                    disabled={loading || message}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {loading ? <Loader2 className="spinner-mini" /> : (
-                      <>Commit New Password <ShieldCheck size={18} style={{marginLeft: '8px'}} /></>
-                    )}
-                  </motion.button>
-                </form>
-              </motion.div>
+                <button type="submit" className="submit-btn" disabled={loading || message}>
+                  {loading ? <Loader2 className="spinner-mini" /> : 'Update Password'}
+                </button>
+              </form>
             )}
           </AnimatePresence>
         </div>
